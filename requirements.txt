@@ -1,0 +1,22 @@
+# Streamlit UI 컴포넌트 체험관 필수 패키지들
+
+# 핵심 프레임워크
+streamlit>=1.28.0
+
+# 데이터 처리
+pandas>=2.0.0
+numpy>=1.24.0
+
+# 시각화
+plotly>=5.15.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# 이미지 처리
+Pillow>=10.0.0
+
+# HTTP 요청
+requests>=2.31.0
+
+# 추가 유틸리티
+python-dateutil>=2.8.2
