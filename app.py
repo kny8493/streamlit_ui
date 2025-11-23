@@ -23,19 +23,89 @@ st.markdown("---")
 
 # 사이드바 네비게이션
 st.sidebar.title("🧭 네비게이션")
-page = st.sidebar.selectbox(
-    "체험할 컴포넌트 카테고리를 선택하세요:",
-    [
-        "🏠 홈",
-        "📝 입력 위젯",
-        "📊 데이터 표시",
-        "📈 차트 & 그래프",
-        "🖼️ 미디어",
-        "📋 레이아웃",
-        "🎯 상태 & 제어",
-        "🔧 유틸리티"
-    ]
-)
+st.sidebar.markdown("**체험할 컴포넌트 카테고리를 선택하세요:**")
+st.sidebar.markdown("")  # 공백 추가
+
+# 메뉴 옵션 리스트
+menu_options = [
+    "🏠 홈",
+    "📝 입력 위젯",
+    "📊 데이터 표시",
+    "📈 차트 & 그래프",
+    "🖼️ 미디어",
+    "📋 레이아웃",
+    "🎯 상태 & 제어",
+    "🔧 유틸리티"
+]
+
+# 세션 상태 초기화 (현재 선택된 페이지 저장)
+if 'current_page' not in st.session_state:
+    st.session_state.current_page = "🏠 홈"
+
+# 메뉴 스타일링을 위한 CSS 추가
+st.sidebar.markdown("""
+    <style>
+    /* 버튼 스타일 개선 */
+    .stButton > button {
+        width: 100%;
+        text-align: left;
+        padding: 10px 15px;
+        margin: 2px 0;
+        border-radius: 8px;
+        border: 2px solid #e0e4e8;
+        background-color: #f8f9fa;
+        color: #1f2937;
+        font-size: 15px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .stButton > button:hover {
+        background-color: #e9ecef;
+        border-color: #1f77b4;
+        transform: translateX(5px);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    /* 선택된 버튼 스타일 */
+    .stButton > button[kind="primary"] {
+        background-color: #1f77b4;
+        color: white;
+        border-color: #1f77b4;
+        font-weight: 600;
+    }
+    .stButton > button[kind="primary"]:hover {
+        background-color: #1a5f8f;
+        border-color: #1a5f8f;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# 각 메뉴 항목을 버튼으로 표시
+for option in menu_options:
+    # 현재 선택된 페이지인지 확인
+    is_selected = (st.session_state.current_page == option)
+    
+    # 버튼 타입 설정 (선택된 항목은 primary, 나머지는 secondary)
+    button_type = "primary" if is_selected else "secondary"
+    
+    # 버튼 클릭 시 해당 페이지로 이동
+    if st.sidebar.button(option, key=option, type=button_type, use_container_width=True):
+        st.session_state.current_page = option
+
+# 현재 선택된 페이지 사용
+page = st.session_state.current_page
+
+def show_footer():
+    """페이지 하단에 푸터 정보를 표시하는 함수"""
+    st.markdown("---")
+    # 푸터 정보를 한 줄로 중앙 정렬하여 표시 (영어)
+    st.markdown(
+        """
+        <div style='text-align: center; color: #666; padding: 20px 0; font-size: 14px;'>
+            Last updated: 2025.11.23 | Created by NaYoung Kim | © 2025 NaYoung Kim. All rights reserved.
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 def show_home():
     """홈 페이지를 표시하는 함수"""
@@ -63,6 +133,9 @@ def show_home():
         '급여': [5000, 4500, 5500, 4200, 5800]
     })
     st.dataframe(sample_data, width='stretch')
+    
+    # 푸터 표시
+    show_footer()
 
 def show_input_widgets():
     """입력 위젯들을 보여주는 함수"""
@@ -167,6 +240,9 @@ def show_input_widgets():
         st.write(f"선택된 색상: {color}")
         # 색상 미리보기
         st.markdown(f'<div style="width:100px; height:50px; background-color:{color}; border:1px solid #ccc;"></div>', unsafe_allow_html=True)
+    
+    # 푸터 표시
+    show_footer()
 
 def show_data_display():
     """데이터 표시 컴포넌트들을 보여주는 함수"""
@@ -237,6 +313,9 @@ def show_data_display():
         }
     }
     st.json(sample_json)
+    
+    # 푸터 표시
+    show_footer()
 
 def show_charts():
     """차트 및 그래프 컴포넌트들을 보여주는 함수"""
@@ -294,6 +373,9 @@ def show_charts():
         columns=['lat', 'lon']
     )
     st.map(map_data)
+    
+    # 푸터 표시
+    show_footer()
 
 def show_media():
     """미디어 컴포넌트들을 보여주는 함수"""
@@ -339,6 +421,9 @@ def show_media():
         st.video(video_file)
     else:
         st.info("비디오 파일을 업로드해주세요")
+    
+    # 푸터 표시
+    show_footer()
 
 def show_layout():
     """레이아웃 컴포넌트들을 보여주는 함수"""
@@ -393,6 +478,9 @@ def show_layout():
     with tab3:
         st.write("세 번째 탭의 내용입니다.")
         st.area_chart(np.random.randn(10, 2))
+    
+    # 푸터 표시
+    show_footer()
 
 def show_status_control():
     """상태 및 제어 컴포넌트들을 보여주는 함수"""
@@ -465,6 +553,9 @@ def show_status_control():
     # 눈 효과
     if st.button("눈 내리기 ❄️"):
         st.snow()
+    
+    # 푸터 표시
+    show_footer()
 
 def show_utilities():
     """유틸리티 컴포넌트들을 보여주는 함수"""
@@ -526,6 +617,9 @@ result = hello_streamlit()
     # 사이드바에 추가 정보
     st.sidebar.markdown("---")
     st.sidebar.info("💡 **팁**: 각 카테고리를 선택하여 다양한 Streamlit 컴포넌트들을 체험해보세요!")
+    
+    # 푸터 표시
+    show_footer()
 
 # 메인 애플리케이션 로직
 if page == "🏠 홈":
